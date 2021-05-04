@@ -1,17 +1,24 @@
 const express = require('express');
 const app = express();
+const weather = require ('./data/weather.json');
+
 const cors = require ('cors');
-const data = require ('./data/weather.json');
- 
 app.use(cors());
+
+
 app.get('/', function (req, res) {
   res.send('Hello World')
 })
 
-app.use(cors());
 app.get('/weather', function (req, res) {
-  res.send(data)
+  const dataArray = weather.data.map(data => new WeatherData(data));
+  res.send(dataArray)
 })
-console.log('hi');
- console.log(data);
-app.listen(3002)
+
+class WeatherData{
+  constructor(data){
+    this.date=data.valid_date;
+    this.description=data.weather.description;
+  }
+}
+app.listen(3007)
