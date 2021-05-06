@@ -2,11 +2,12 @@ const express = require('express');
 const app = express();
 const weather = require ('./data/weather.json');
 const superagent = require('superagent');
+require('dotenv').config();
 
 
 const cors = require ('cors');
 app.use(cors());
-
+const PORT = process.env.PORT;
 
 app.get('/', function (req, res) {
   res.send('Hello World')
@@ -46,4 +47,7 @@ class MoviesData{
     this.total=data.vote_count;
   }
 }
-app.listen(4050)
+app.listen(PORT, ()=>{
+console.log(PORT);
+})
+// app.listen(7030)
