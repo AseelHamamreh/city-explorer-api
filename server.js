@@ -29,5 +29,18 @@ class WeatherData{
   }
 }
 
-
-app.listen(6070)
+app.get('/movies', (req, res) => {
+  const movieBitUrl = `https://api.themoviedb.org/3/search/movie?api_key=8922e6d8824b159e0044f0f46311c10b&query=${req.query.cityName}&limit=10`
+  superagent.get(movieBitUrl).then(movieBitData => {
+      const arrOfMovieData = movieBitData.body.results.map(result => new MoviesData(result));
+      res.send(arrOfMovieData);
+  });
+});
+class MoviesData{
+  constructor(data){
+    this.title=data.original_title;
+    this.description=data.overview;
+    this.myImage = data.backdrop_path;
+  }
+}
+app.listen(4050)
