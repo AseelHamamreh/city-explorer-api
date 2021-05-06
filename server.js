@@ -40,7 +40,7 @@ class MoviesData{
   constructor(data){
     this.title=data.original_title;
     this.description=data.overview;
-    this.myImage = data.backdrop_path;
+    this.image = `https://www.themoviedb.org/t/p/original/${data.backdrop_path}`;
   }
 }
 app.listen(4050)
