@@ -41,6 +41,9 @@ class MoviesData{
     this.title=data.original_title;
     this.description=data.overview;
     this.image = `https://www.themoviedb.org/t/p/original/${data.backdrop_path}`;
+    this.date=data.release_date;
+    this.avg=data.vote_average;
+    this.total=data.vote_count;
   }
 }
 app.listen(4050)
