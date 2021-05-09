@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/AseelHamamreh/city-explorer-api#readme",
   "dependencies": {
+    "cache": "^2.3.1",
     "cors": "^2.8.5",
     "dotenv": "^9.0.0",
     "express": "^4.17.1",

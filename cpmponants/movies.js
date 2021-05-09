@@ -1,14 +1,35 @@
 const superagent = require('superagent');
 require('dotenv').config();
+const Cache = require('./Cache.js');
 
-const moviesURL = process.env.MOVIE_URL;
-const movieKey = process.env.MOVIE_KEY;
 const handleMovies = (req, res) => {
-  const movieBitUrl = `${moviesURL}?api_key=${movieKey}&query=${req.query.cityName}&limit=10`;
-  superagent.get(movieBitUrl).then(movieBitData => {
-    const arrOfMovieData = movieBitData.body.results.map(result => new MoviesData(result));
-    res.send(arrOfMovieData);
-  });
+  try{
+    const moviesURL = process.env.MOVIE_URL;
+    const movieKey = process.env.MOVIE_KEY;
+    const movieBitUrl= moviesURL;
+    const city= req.query.cityName;
+    const params={
+      api_key: movieKey,
+      query: city,
+    };
+    // const movieBitUrl = `${moviesURL}?api_key=${movieKey}&query=${req.query.cityName}&limit=10`;
+
+    if(Cache[city]){
+      console.log('Movies cache hit');
+      res.send(Cache[city]);
+    }
+    else{
+      console.log('Movies cache miss');
+      superagent.get(movieBitUrl).query(params).then(movieBitData => {
+        const arrOfMovieData = movieBitData.body.results.map(result => new MoviesData(result));
+        res.send(arrOfMovieData);
+        Cache[city]=arrOfMovieData;
+      });
+    }
+  }
+  catch(error){
+    console.log(error);
+  }
 };
 
 class MoviesData{
