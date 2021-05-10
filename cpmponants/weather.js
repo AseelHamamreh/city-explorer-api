@@ -15,16 +15,17 @@ const handleWeather = (req, res) => {
       lon: lon,
     };
     // const weatherBitUrl = `${weatherURL}?key=${weatherKey}&lat=${req.query.lat}&lon=${req.query.lon}`;
-    if(Cache[lat,lon]){
+    const myKey = `${lat}${lon}`;
+    if(Cache[myKey]){
       console.log('Weather cache hit');
-      res.send(Cache[lat,lon]);
+      res.send(Cache[myKey]);
     }
     else{
       console.log('Weather cache miss');
       superagent.get(weatherBitUrl).query(params).then(weatherBitData => {
         const arrOfData = weatherBitData.body.data.map(data => new WeatherData(data));
         res.send(arrOfData);
-        Cache[lat,lon]=arrOfData;
+        Cache[myKey]=arrOfData;
       });
     }
   }
